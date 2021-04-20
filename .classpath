@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="TiPaNiMo/src"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/ibxm.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/jinput.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/slick.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/lib/tinylinepp.jar"/>
+	<classpathentry kind="lib" path="TiPaNiMo/tools/tools.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
