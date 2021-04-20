@@ -8,6 +8,11 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+/**
+ * Ball Class
+ * @author Maurice Sonntag
+ *
+ */
 public class Ball extends GameObject {
 
 	private static boolean render = false;
