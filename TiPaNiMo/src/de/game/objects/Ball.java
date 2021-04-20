@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 
 public class Ball extends GameObject {
 
@@ -39,11 +40,13 @@ public class Ball extends GameObject {
 			
 			double distance = 0.0f;
 			
-			double mouseX = input.getMouseX();
-			double mouseY = input.getMouseY();
+			float mouseX = input.getMouseX();
+			float mouseY = input.getMouseY();
 			
-			double[] vektor = {(lastX - mouseX), (lastY - mouseY)};
-			distance = (float) Math.sqrt(Math.pow(vektor[0], 2) + Math.pow(vektor[1], 2));
+			Vector2f lastBallPosition = new Vector2f(lastX, lastY);
+			Vector2f mousePosition = new Vector2f(mouseX, mouseY);
+			
+			distance = lastBallPosition.distance(mousePosition);
 			
 			double lastBallX = lastX, lastBallY = lastY;
 			
