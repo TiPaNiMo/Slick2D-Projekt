@@ -1,0 +1,20 @@
+# Slick Computerspiel Eclipse Einstiegsprojekt
+
+Projekt Datum:      17.10.2010
+Slick: niglty build 17.10.2010
+LWJGL Version:      2.5
+
+# Verzeichnisse:
+src:      Ordner für den Quellcode des Spiels.
+lib:      Slick und abhängige Java Bibliotheken.
+libdoc:   JavaDoc Beschreibung von Slick.
+libsrc:   Quellcode von Slick und LWJGL. Nicht nötig zum Ausführen eines Slick Spiels, aber 
+          nützlich um die Slick Beispiele aus dem Package „org.newdawn.slick.tests“ anzuzeigen.
+natives:  System abhängige Bibliotheken für Linux, Mac und Windows
+res:      Ordner für deine Spielressourcen (Bilder, Sounds etc.).  -anfangs leer
+testdata: Ressourcen um die Slick Beispiele zu starten.
+tools:    Slick Tools: Pedigree (Particle Editor), Hiero (Bitmap Fonts), Scalar (Scale 2/3x), 
+          Packer (Sprite Packing Tool)
+		  
+# Kontakt
+Fragen, Problemen oder Wünschen bitte bei tobse.fritz@gmx.de melden!
