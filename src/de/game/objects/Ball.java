@@ -11,6 +11,7 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * Ball Class
  * @author Maurice Sonntag
+ * @author Pawel Czudy
  *
  */
 public class Ball extends GameObject {
