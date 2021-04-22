@@ -19,7 +19,7 @@ public class Ball extends GameObject {
 	private static boolean render = false;
 	private final Input input;
 	
-	private int lastX, lastY;
+	private Vector2f pressedMousePosition = new Vector2f(0, 0);
 	
 	ArrayList<Circle> balls = new ArrayList<Circle>();
 	
@@ -31,42 +31,35 @@ public class Ball extends GameObject {
 		for (int i = 0; i < 9; i++) {
 			balls.add(new Circle(0, 0, 4));
 		}
+		
 	}
 	
 	public void update(int delta) {
 		super.update(delta);
 		
 		if (input.isMousePressed(0)) {
-			this.lastX = input.getMouseX();
-			this.lastY = input.getMouseY();
-			this.setPosition(lastX, lastY);
+			this.pressedMousePosition.set(input.getMouseX(), input.getMouseY());
+			
+			this.setPosition(this.pressedMousePosition.getX(), this.pressedMousePosition.getY());
 		}
 		
 		if (input.isMouseButtonDown(0)) {
 			
-			double distance = 0.0f;
+			Vector2f mousePosition = new Vector2f(input.getMouseX(), input.getMouseY());
 			
-			float mouseX = input.getMouseX();
-			float mouseY = input.getMouseY();
-			
-			Vector2f lastBallPosition = new Vector2f(lastX, lastY);
-			Vector2f mousePosition = new Vector2f(mouseX, mouseY);
-			
-			distance = lastBallPosition.distance(mousePosition);
-			
-			double lastBallX = lastX, lastBallY = lastY;
+			float x = 1f / balls.size();
 			
 			for (Circle ball : balls) {
-				double ballX = 0, ballY = 0;
 				
-				ballX = lastBallX + (mouseX - lastBallX)/ balls.size();
-				ballY = lastBallY + (mouseY - lastBallY)/ balls.size();
+				Vector2f ballPosition = new Vector2f(
+						(float) (this.pressedMousePosition.getX() + x * (mousePosition.getX() - this.pressedMousePosition.getX())), 
+						(float) (this.pressedMousePosition.getY() + x * (mousePosition.getY() - this.pressedMousePosition.getY()))
+				);
 				
-				ball.setCenterX((float) ballX);
-				ball.setCenterY((float) ballY);
+				ball.setCenterX(ballPosition.getX());
+				ball.setCenterY(ballPosition.getY());
 				
-				lastBallX = ballX;
-				lastBallY = ballY;
+				x += 1f / balls.size();
 			}
 			
 			render = true;
