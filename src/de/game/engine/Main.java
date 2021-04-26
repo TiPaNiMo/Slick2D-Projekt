@@ -2,6 +2,9 @@ package de.game.engine;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Rectangle;
+
 import de.game.objects.Ball;
 import de.game.levels.*;
 
@@ -19,6 +22,7 @@ public class Main extends BasicGame {
 	private Image placeholder;
 	private Input input;
 	private static Ball player;
+	
 	
 	public enum State{
 		START, GAME, GAME_OVER;
@@ -41,6 +45,7 @@ public class Main extends BasicGame {
 		input = container.getInput();
 		
 		player = new Ball("Player", input, new Circle(0f, 0f, 10f));
+		
 	}
 
 	@Override
@@ -50,6 +55,7 @@ public class Main extends BasicGame {
 		case START:
 			
 			g.drawString("TiPaNiMo!", (container.getWidth() / 2) - 32, container.getHeight() / 2);
+			
 			
 			player.render(g);
 			
