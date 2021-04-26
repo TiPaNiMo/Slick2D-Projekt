@@ -51,7 +51,7 @@ public class Main extends BasicGame {
 			
 			g.drawString("TiPaNiMo!", (container.getWidth() / 2) - 32, container.getHeight() / 2);
 			
-			player.render(g);
+			player.render(g, container);
 			
 			break;
 		case GAME:
@@ -74,7 +74,7 @@ public class Main extends BasicGame {
 		switch(state) {
 		case START:
 			
-			player.update(delta);
+			player.update(delta, container);
 			
 			break;
 		case GAME:
