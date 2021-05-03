@@ -8,7 +8,6 @@ import org.newdawn.slick.geom.Rectangle;
 
 import de.game.objects.Ball;
 import de.game.objects.LevelObject;
-import de.game.levels.*;
 
 public class Main extends BasicGame {
 	

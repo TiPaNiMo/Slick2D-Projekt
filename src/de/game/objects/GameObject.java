@@ -59,6 +59,11 @@ public abstract class GameObject {
 	 * @param name Name of the game object
 	 * @param shape Simple shape for simple graphics
 	 */
+	public GameObject(String name) {
+		super();
+		this.name = name;
+	}
+	
 	public GameObject(String name, Shape shape) {
 		this.name = name;
 		this.shape = shape;
