@@ -1,0 +1,164 @@
+package de.game.objects;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Sound;
+import org.newdawn.slick.geom.Shape;
+
+public class LevelObject extends GameObject {
+
+	/** state of object if its hit */
+	private boolean hit = false;
+	
+	/** state of object if its first rotate */
+	private boolean firstRotate = true;
+	/** actual rotation of object */
+	private float rotation = 0;
+	
+	/* UNSUED
+	private boolean rotation = true;
+	private float rotationSpeed = 0.9f;
+	*/
+	
+	/** sound effect if object is hit */
+	private Sound soundEffect = null;
+	
+	/** color of object */
+	private Color color = null;
+	
+	/**
+	 * Creates a level object
+	 * @param name Name of the object
+	 * @param shape Shape of the object
+	 * @param x Position X of object
+	 * @param y Position Y of object
+	 */
+	public LevelObject(String name, Shape shape, float x, float y) {
+		super(name, shape, x, y);
+	}
+	
+	/**
+	 * Creates a level object
+	 * @param name Name of the object
+	 * @param shape Shape of the object
+	 * @param x Position X of object
+	 * @param y Position Y of object
+	 * @param color Color of object when its drawn
+	 */
+	public LevelObject(String name, Shape shape, float x, float y, Color color) {
+		super(name, shape, x, y);
+		this.color = color;
+	}
+	
+	/**
+	 * Creates a level object
+	 * @param name Name of the object
+	 * @param shape Shape of the object
+	 * @param x Position X of object
+	 * @param y Position Y of object
+	 * @param startRotation First rotation when its drawn
+	 */
+	public LevelObject(String name, Shape shape, float x, float y, float startRotation) {
+		super(name, shape, x, y);
+		this.rotation += startRotation;
+	}
+	
+	/**
+	 * Creates a level object
+	 * @param name Name of the object
+	 * @param shape Shape of the object
+	 * @param x Position X of object
+	 * @param y Position Y of object
+	 * @param startRotation First rotation when its drawn
+	 * @param color Color of object when its drawn
+	 */
+	public LevelObject(String name, Shape shape, float x, float y, int startRotation, Color color) {
+		super(name, shape, x, y);
+		this.rotation += startRotation;
+	}
+
+	/**
+	 * Update function
+	 * @param delta deltaTime
+	 */
+	public void update(int delta) {
+		super.update(delta);
+		
+		if (firstRotate) {
+			this.rotate(this.rotation);
+			this.firstRotate = false;
+		}
+		
+		/**
+		 * TODO Rotation
+		if (rotation) {
+			this.actualRotation = actualRotation % 360;
+			this.rotate(this.actualRotation);
+		}
+		*/
+		
+		try {
+			if (this.hit && this.soundEffect != null) {
+				this.soundEffect.play();
+			}
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+	
+	/**
+	 * Render function
+	 * @param g Slick2D Graphics
+	 */
+	public void render(Graphics g) {
+		super.render(g);
+		
+		if (this.color == null) {
+			g.setColor(this.color);
+		} else {
+			g.setColor(Color.white);
+		}
+	}
+	
+	/**
+	 * Checks if object is hit by an object
+	 * @param shape
+	 */
+	public boolean checkHit(Shape shape) {
+		if (this.intersects(shape)) {
+			this.hit = true;
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Sets sound effect
+	 * @param sound
+	 */
+	public void setSoundEffect(Sound sound) {
+		this.soundEffect = sound;
+	}
+	/**
+	 * Gets sound effect
+	 * @return
+	 */
+	public Sound getSoundEffect() {
+		return this.soundEffect;
+	}
+	
+	/**
+	 * Sets color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	/**
+	 * Gets color
+	 */
+	public Color getColor() {
+		return this.getColor();
+	}
+
+}

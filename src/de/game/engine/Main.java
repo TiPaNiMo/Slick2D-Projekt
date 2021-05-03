@@ -1,8 +1,13 @@
 package de.game.engine;
 
+import java.util.ArrayList;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Rectangle;
+
 import de.game.objects.Ball;
+import de.game.objects.LevelObject;
 import de.game.levels.*;
 
 public class Main extends BasicGame {
@@ -20,11 +25,13 @@ public class Main extends BasicGame {
 	private Input input;
 	private static Ball player;
 	
+	ArrayList<LevelObject> levelObjects = new ArrayList<LevelObject>();
+	
 	public enum State{
 		START, GAME, GAME_OVER;
 	}
 
-	private static State state = State.START;
+	private static State state = State.GAME;
 
 	public Main() {
 		super(windowName);
@@ -41,6 +48,8 @@ public class Main extends BasicGame {
 		input = container.getInput();
 		
 		player = new Ball("Player", input, new Circle(0f, 0f, 10f));
+		
+		levelObjects.add(new LevelObject("Object", new Rectangle(200, 100, 20, 40), 200, 100, 90));
 	}
 
 	@Override
@@ -55,6 +64,10 @@ public class Main extends BasicGame {
 			
 			break;
 		case GAME:
+			
+			for (LevelObject object: levelObjects) {
+				object.render(g);
+			}
 			
 			break;
 		case GAME_OVER:
@@ -78,6 +91,10 @@ public class Main extends BasicGame {
 			
 			break;
 		case GAME:
+			
+			for (LevelObject object: levelObjects) {
+				object.update(delta);
+			}
 			
 			break;
 		case GAME_OVER:
