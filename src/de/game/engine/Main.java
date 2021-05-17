@@ -6,6 +6,8 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 
+import de.game.levels.Level;
+import de.game.levels.LevelController;
 import de.game.objects.Ball;
 import de.game.objects.LevelObject;
 
@@ -24,7 +26,7 @@ public class Main extends BasicGame {
 	private Input input;
 	private static Ball player;
 	
-	ArrayList<LevelObject> levelObjects = new ArrayList<LevelObject>();
+	private LevelController levelController;
 	
 	public enum State{
 		START, GAME, GAME_OVER;
@@ -48,7 +50,7 @@ public class Main extends BasicGame {
 		
 		player = new Ball("Player", input, new Circle(0f, 0f, 10f));
 		
-		levelObjects.add(new LevelObject("Object", new Rectangle(200, 100, 20, 40), 200, 100, 90));
+		levelController = new LevelController(this.player);
 	}
 
 	@Override
@@ -59,13 +61,16 @@ public class Main extends BasicGame {
 			
 			g.drawString("TiPaNiMo!", (container.getWidth() / 2) - 32, container.getHeight() / 2);
 			
-			player.render(g);
+			//player.render(g);
 			
 			break;
 		case GAME:
 			
-			for (LevelObject object: levelObjects) {
-				object.render(g);
+			try {
+				LevelController.LEVELS.get(LevelController.LEVELINDEX).render(container, g);
+			} catch(Exception e) {
+				System.out.println("[ERROR] Level nicht gefunden!");
+				state = State.START;
 			}
 			
 			break;
@@ -86,13 +91,16 @@ public class Main extends BasicGame {
 		switch(state) {
 		case START:
 			
-			player.update(delta);
+			//player.update(delta);
 			
 			break;
 		case GAME:
 			
-			for (LevelObject object: levelObjects) {
-				object.update(delta);
+			try {
+				LevelController.LEVELS.get(LevelController.LEVELINDEX).update(container, delta);
+			} catch(Exception e) {
+				System.out.println("[ERROR] Level nicht gefunden!");
+				state = State.START;
 			}
 			
 			break;

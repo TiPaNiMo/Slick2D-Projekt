@@ -23,8 +23,6 @@ public class LevelObject extends GameObject {
 	/** sound effect if object is hit */
 	private Sound soundEffect = null;
 	
-	/** color of object */
-	private Color color = null;
 	
 	/**
 	 * Creates a level object
@@ -75,6 +73,7 @@ public class LevelObject extends GameObject {
 	public LevelObject(String name, Shape shape, float x, float y, int startRotation, Color color) {
 		super(name, shape, x, y);
 		this.rotation += startRotation;
+		this.color = color;
 	}
 
 	/**
@@ -112,13 +111,15 @@ public class LevelObject extends GameObject {
 	 * @param g Slick2D Graphics
 	 */
 	public void render(Graphics g) {
-		super.render(g);
 		
 		if (this.color == null) {
 			g.setColor(this.color);
 		} else {
 			g.setColor(Color.white);
 		}
+		
+		super.render(g);
+	
 	}
 	
 	/**
