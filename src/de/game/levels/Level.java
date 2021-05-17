@@ -7,19 +7,22 @@ import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Circle;
 
 public class Level{
 
 	private String name;
+	private Image background;
 	
 	private final Ball player;
 	private ArrayList<LevelObject> staticObjects = new ArrayList<LevelObject>();
 	private ArrayList<LevelObject> dynamicObjects = new ArrayList<LevelObject>();
 	
-	public Level(String name, Ball player) {
+	public Level(String name, Ball player, Image background) {
 		this.setName(name);
 		this.player = player;
+		this.background = background;
 	}
 	
 	/**
@@ -28,6 +31,9 @@ public class Level{
 	 * @param g
 	 */
 	public void render(GameContainer container, Graphics g) {
+		
+		this.background.draw(0, 0, container.getWidth(), container.getHeight());
+		
 		for (LevelObject object : staticObjects) {
 			object.render(g);
 		}
@@ -35,6 +41,7 @@ public class Level{
 			object.render(g);
 		}
 		player.render(g);
+		
 	}
 	
 	/**
@@ -91,6 +98,14 @@ public class Level{
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Image getBackground() {
+		return background;
+	}
+
+	public void setBackground(Image background) {
+		this.background = background;
 	}
 
 }
