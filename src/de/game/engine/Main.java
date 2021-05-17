@@ -1,15 +1,9 @@
 package de.game.engine;
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
-import org.newdawn.slick.geom.Rectangle;
-
-import de.game.levels.Level;
 import de.game.levels.LevelController;
 import de.game.objects.Ball;
-import de.game.objects.LevelObject;
 
 public class Main extends BasicGame {
 	
