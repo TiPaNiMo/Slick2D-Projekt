@@ -20,7 +20,7 @@ public class Level{
 	private ArrayList<LevelObject> dynamicObjects = new ArrayList<LevelObject>();
 	
 	public Level(String name, Ball player, Image background) {
-		this.setName(name);
+		this.name = name;
 		this.player = player;
 		this.background = background;
 	}
@@ -40,7 +40,8 @@ public class Level{
 		for (LevelObject object : dynamicObjects) {
 			object.render(g);
 		}
-		player.render(g);
+		
+		player.render(g, container);
 		
 	}
 	
@@ -56,7 +57,8 @@ public class Level{
 		for (LevelObject object : dynamicObjects) {
 			object.update(delta);
 		}
-		player.update(delta);
+		
+		player.update(delta, container);
 	}
 	
 	/**
