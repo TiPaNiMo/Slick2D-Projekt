@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 
 /**
  * Represents a graphical object in the game with a shape, a texture and a hit box.
@@ -58,12 +59,30 @@ public abstract class GameObject {
 	 * @param name Name of the game object
 	 * @param shape Simple shape for simple graphics
 	 */
+	public GameObject(String name) {
+		super();
+		this.name = name;
+	}
+	
 	public GameObject(String name, Shape shape) {
 		this.name = name;
 		this.shape = shape;
 		this.hitbox = shape;
 		this.x = shape.getX();
 		this.y = shape.getY();
+	}
+	
+	/**
+	 * Creates a new game object with given name, a simple shape and a position
+	 * @param name Name of the game object
+	 * @param shape Simple shape for simple graphics
+	 */
+	public GameObject(String name, Shape shape, float x, float y) {
+		this.name = name;
+		this.shape = shape;
+		this.hitbox = shape;
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
@@ -139,6 +158,16 @@ public abstract class GameObject {
 		return position;
 	}
 
+	/**
+	 * Rotates the Shape and the hit box
+	 * @param rotate
+	 */
+	public void rotate(float rotate) {
+		Transform transform = Transform.createRotateTransform(rotate, this.x, this.y);
+		this.shape = this.shape.transform(transform);
+		this.hitbox = this.hitbox.transform(transform);
+	}
+	
 	/**
 	 * Returns position on x-axis
 	 * @return x Position on x-axis
