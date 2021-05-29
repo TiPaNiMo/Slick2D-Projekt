@@ -2,8 +2,11 @@ package de.game.engine;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Shape;
+
 import de.game.levels.LevelController;
 import de.game.objects.Ball;
+import de.game.objects.LevelObject;
 
 public class Main extends BasicGame {
 	

@@ -9,6 +9,8 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import de.game.levels.LevelController;
+
 /**
  * Ball Class
  * @author Maurice Sonntag
@@ -27,7 +29,7 @@ public class Ball extends GameObject {
 	private final Input input;
 	
 	/** Moving speed of the ball */
-	private float acceleration = 0.25f;
+	private float acceleration = 0.4f;
 	
 	/** Position of the ball as vector (DON'T EDIT FOR CHANGING POSITION: USE this.setPosition or this.x, this.y) */
 	private Vector2f position = new Vector2f(x, y);
@@ -40,6 +42,9 @@ public class Ball extends GameObject {
 	
 	/** Value added to ball's position for moving */
 	private Vector2f directionVector = new Vector2f(0, 0);
+	
+	/** Angle of the directionVector */
+	private float angle = 0;
 	
 	/** Saving small balls of the shooting UI */
 	ArrayList<Circle> balls = new ArrayList<Circle>();
@@ -103,6 +108,9 @@ public class Ball extends GameObject {
 			 */
 			this.calculateDirectionVector();
 			
+
+			System.out.println(this.angle);
+			
 			/**
 			 * Sets rendering of balls and shooting UI to true
 			 */
@@ -110,6 +118,13 @@ public class Ball extends GameObject {
 			renderBalls = true;
 		} else {
 
+			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
+				this.intersects(object);
+			}
+			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
+				this.intersects(object);
+			}
+			
 			/**
 			 * Moving the ball after mouse button 0 (left) released
 			 */
@@ -149,6 +164,24 @@ public class Ball extends GameObject {
 		}
 	}
 	
+	public void intersects(GameObject object) {
+		
+		/**
+		 * Check if the ball touches an game object and reflects the direction vector
+		 */
+		if (object.intersects(this.shape)) {
+			
+			Vector2f normal = new Vector2f(this.getX(), this.getY()).negate().normalise();
+			
+			float dotProduct = this.directionVector.dot(normal);
+			
+			this.directionVector.set(
+					this.directionVector.getX() - 2 * dotProduct * normal.getX(),
+					this.directionVector.getY() - 2 * dotProduct * normal.getY()
+			);
+		}
+	}
+	
 	/**
 	 * Calculating the direction vector that is required to move the ball
 	 */
@@ -163,6 +196,11 @@ public class Ball extends GameObject {
 						shootMousePosition.getX() - position.getX()
 				)
 		);
+		
+		/**
+		 * Sets angle
+		 */
+		this.angle = angle;
 		
 		/**
 		 * Sets the direction vector as a unit vector

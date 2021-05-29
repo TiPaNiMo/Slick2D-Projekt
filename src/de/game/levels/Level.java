@@ -108,4 +108,18 @@ public class Level{
 		this.background = background;
 	}
 
+	/**
+	 * @return the staticObjects
+	 */
+	public ArrayList<LevelObject> getStaticObjects() {
+		return staticObjects;
+	}
+
+	/**
+	 * @return the dynamicObjects
+	 */
+	public ArrayList<LevelObject> getDynamicObjects() {
+		return dynamicObjects;
+	}
+
 }
