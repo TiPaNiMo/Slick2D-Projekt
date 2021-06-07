@@ -9,6 +9,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 import de.game.objects.Ball;
 import de.game.objects.LevelObject;
+import de.game.objects.TextObject;
 
 public class LevelController {
 
@@ -22,7 +23,11 @@ public class LevelController {
 
 			Level level00_tutorial = new Level("Tutorial", player, new Image("src/de/game/textures/level/Background_Level_0.jpg"));
 			level00_tutorial.addDynamicObject(new LevelObject("Object", new Rectangle(0, 0, 100, 100), 300, 300));
-
+			level00_tutorial.addTextObject(new TextObject("Press LEFT mouse key to place the ball", 150, 100, Color.white));
+			level00_tutorial.addTextObject(new TextObject("Release LEFT mouse key to shoot the ball", 138, 130, Color.white));
+			level00_tutorial.addTextObject(new TextObject("Move the cursor for aiming", 190, 180, Color.white));
+			
+			
 			Level level01 = new Level("Level 1", player, new Image("src/de/game/textures/level/Level1Slick2D.png"));
 			level01.addDynamicObject(new LevelObject("Linkes Rechteck", new Rectangle(0, 0, 40, 350), 100, 500));
 			level01.addDynamicObject(new LevelObject("Rechtes Rechteck", new Rectangle(0, 0, 40, 350), 500, 500));

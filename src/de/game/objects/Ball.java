@@ -2,7 +2,6 @@ package de.game.objects;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -24,8 +23,8 @@ public class Ball extends GameObject {
 	/**
 	 * Needed for rendering
 	 */
-	private static boolean render = false;
-	private static boolean renderBalls = false;
+	private static boolean RENDER = false;
+	private static boolean RENDERBALLS = false;
 	
 	/** Input */
 	private final Input input;
@@ -89,6 +88,11 @@ public class Ball extends GameObject {
 		if (input.isMousePressed(0)) {
 			
 			/**
+			 * Resets level and ball
+			 */
+			this.reset();
+			
+			/**
 			 * Save mouse position on first click for placing the ball before release
 			 */
 			this.pressedMousePosition.set(input.getMouseX(), input.getMouseY());
@@ -99,7 +103,7 @@ public class Ball extends GameObject {
 		 * On mouse is pressed
 		 */
 		if (input.isMouseButtonDown(0)) {
-
+			
 			/**
 			 * Drawing shooting UI
 			 */
@@ -119,15 +123,15 @@ public class Ball extends GameObject {
 			/**
 			 * Sets rendering of balls and shooting UI to true
 			 */
-			render = true;
-			renderBalls = true;
+			RENDER = true;
+			RENDERBALLS = true;
 		} else {
 
 			/**
 			 * Check for reflect
 			 */
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
-				this.reflect(object);
+				if (!object.isHit()) this.reflect(object);
 			}
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
 				this.reflect(object);
@@ -142,7 +146,7 @@ public class Ball extends GameObject {
 			/**
 			 * Sets rendering of shooting UI to false because its unnecessary
 			 */
-			renderBalls = false;
+			RENDERBALLS = false;
 		}
 	}
 	
@@ -156,14 +160,14 @@ public class Ball extends GameObject {
 		/**
 		 * Render ball
 		 */
-		if (render) {
+		if (RENDER) {
 			super.render(g);
 		}
 		
 		/**
 		 * Render shooting UI
 		 */
-		if (renderBalls) {
+		if (RENDERBALLS) {
 			for (Circle ball: balls) {
 				g.fill(ball);
 			}
@@ -294,6 +298,41 @@ public class Ball extends GameObject {
 			 * Adding x by x each time to get closer to mouse position
 			 */
 			x += 1f / balls.size();
+		}
+	}
+	
+	private void reset() {
+		
+		/**
+		 * Resets Level
+		 */
+		LevelController.LEVELS.get(LevelController.LEVELINDEX).reset();
+		
+		/**
+		 * Resets directionVector
+		 */
+		this.directionVector = new Vector2f();
+		
+		/**
+		 * Changes rendering
+		 */
+		RENDER = false;
+	}
+	
+	public void changeLevel() {
+		
+		/**
+		 * Reset player and current level
+		 */
+		this.reset();
+		
+		/**
+		 * Go one level forward
+		 */
+		try {
+			LevelController.LEVELINDEX++;
+		} catch (Exception e) {
+			LevelController.LEVELINDEX = 0;
 		}
 	}
 }

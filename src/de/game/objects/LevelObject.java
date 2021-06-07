@@ -5,6 +5,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Shape;
 
+import de.game.engine.Main;
+
 public class LevelObject extends GameObject {
 
 	/** state of object if its hit */
@@ -95,6 +97,8 @@ public class LevelObject extends GameObject {
 			this.rotate(this.actualRotation);
 		}
 		*/
+		/** Check if object was hit by player */
+		this.checkHit(Main.PLAYER.getHitbox());
 		
 		try {
 			if (this.hit && this.soundEffect != null) {
@@ -126,7 +130,7 @@ public class LevelObject extends GameObject {
 	 * Checks if object is hit by an object
 	 * @param shape
 	 */
-	public boolean checkHit(Shape shape) {
+	private boolean checkHit(Shape shape) {
 		if (this.intersects(shape)) {
 			this.hit = true;
 			return true;
@@ -162,4 +166,17 @@ public class LevelObject extends GameObject {
 		return this.getColor();
 	}
 
+	/**
+	 * @return the hit
+	 */
+	public boolean isHit() {
+		return hit;
+	}
+	
+	/**
+	 * sets hit
+	 */
+	public void setHit(boolean hit) {
+		this.hit = hit;
+	}
 }

@@ -1,5 +1,6 @@
 package de.game.levels;
 
+import de.game.engine.Main;
 import de.game.objects.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class Level{
 	private final Ball player;
 	private ArrayList<LevelObject> staticObjects = new ArrayList<LevelObject>();
 	private ArrayList<LevelObject> dynamicObjects = new ArrayList<LevelObject>();
+	private ArrayList<TextObject> textObjects = new ArrayList<TextObject>();
+	
+	private int hitCounter = 0;
 	
 	public Level(String name, Ball player, Image background) {
 		this.name = name;
@@ -32,10 +36,13 @@ public class Level{
 		
 		this.background.draw(0, 0, container.getWidth(), container.getHeight());
 		
-		for (LevelObject object : staticObjects) {
+		for (LevelObject object : this.staticObjects) {
 			object.render(g);
 		}
-		for (LevelObject object : dynamicObjects) {
+		for (LevelObject object : this.dynamicObjects) {
+			if (!object.isHit()) object.render(g);
+		}
+		for (TextObject object : this.textObjects) {
 			object.render(g);
 		}
 		
@@ -49,14 +56,45 @@ public class Level{
 	 * @param delta
 	 */
 	public void update(GameContainer container, int delta) {
-		for (LevelObject object : staticObjects) {
-			object.update(delta);
-		}
-		for (LevelObject object : dynamicObjects) {
+		for (LevelObject object : this.staticObjects) {
 			object.update(delta);
 		}
 		
+		for (LevelObject object : this.dynamicObjects) {
+			if (object.isHit()) {
+				this.hitCounter++;
+			} else {
+				object.update(delta);
+			}
+		}
+		
+		if (this.hitCounter >= this.dynamicObjects.size()) {
+			
+			/** Resets counter */
+			this.hitCounter = 0;
+			
+			/** Change Level */
+			Main.PLAYER.changeLevel();
+			
+		} else {
+			this.hitCounter = 0;
+		}
+		
 		player.update(delta, container);
+	}
+	
+	/**
+	 * Reset Level
+	 */
+	public void reset() {
+		
+		/** Resets counter */
+		this.hitCounter = 0;
+		
+		/** Resets object */
+		for (LevelObject object : this.dynamicObjects) {
+			object.setHit(false);
+		}
 	}
 	
 	/**
@@ -84,13 +122,26 @@ public class Level{
 	public void removeDynamicObject(int index) {
 		this.dynamicObjects.remove(index);
 	}
+	
+	/**
+	 * Text functions
+	 */
+	public void setTextObjects(ArrayList<TextObject> textObjects) {
+		this.textObjects = textObjects;
+	}
+	public void addTextObject(TextObject textObject) {
+		this.textObjects.add(textObject);
+	}
+	public void removeTextObject(int index) {
+		this.textObjects.remove(index);
+	}
 
 	/**
 	 * Get name
 	 * @return
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	/**
 	 * Set name
@@ -101,7 +152,7 @@ public class Level{
 	}
 
 	public Image getBackground() {
-		return background;
+		return this.background;
 	}
 
 	public void setBackground(Image background) {
@@ -112,14 +163,20 @@ public class Level{
 	 * @return the staticObjects
 	 */
 	public ArrayList<LevelObject> getStaticObjects() {
-		return staticObjects;
+		return this.staticObjects;
 	}
 
 	/**
 	 * @return the dynamicObjects
 	 */
 	public ArrayList<LevelObject> getDynamicObjects() {
-		return dynamicObjects;
+		return this.dynamicObjects;
 	}
-
+	
+	/**
+	 * @return the textObjects
+	 */
+	public ArrayList<TextObject> getTextObjects() {
+		return textObjects;
+	}
 }

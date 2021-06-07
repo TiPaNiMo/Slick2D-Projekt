@@ -17,7 +17,7 @@ public class Main extends BasicGame {
 	private static int windowHeight = 1000;
 	private static boolean fullscreen = false;
 	private Input input;
-	private static Ball PLAYER;
+	public static Ball PLAYER;
 	
 	private LevelController levelController;
 	
