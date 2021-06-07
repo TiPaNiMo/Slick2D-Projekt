@@ -13,7 +13,7 @@ import de.game.objects.TextObject;
 
 public class LevelController {
 
-	public static int LEVELINDEX = 0;
+	public static int LEVELINDEX = 8;
 
 	public static ArrayList<Level> LEVELS = new ArrayList<Level>();
 
