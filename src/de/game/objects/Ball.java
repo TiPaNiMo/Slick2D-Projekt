@@ -2,10 +2,12 @@ package de.game.objects;
 
 import java.util.ArrayList;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -46,6 +48,9 @@ public class Ball extends GameObject {
 	/** Angle of the directionVector */
 	private float angle = 0;
 	
+	/** Last Position */
+	private Vector2f lastPosition = new Vector2f(0, 0);
+	
 	/** Saving small balls of the shooting UI */
 	ArrayList<Circle> balls = new ArrayList<Circle>();
 	
@@ -59,6 +64,8 @@ public class Ball extends GameObject {
 		super(name, shape);
 		this.input = input;
 		this.shape = shape;
+		
+		this.hitbox = new Circle(this.shape.getX(), this.shape.getY(), this.shape.getBoundingCircleRadius() * 1.5f);
 		
 		for (int i = 0; i < 9; i++) {
 			balls.add(new Circle(0, 0, 4));
@@ -102,14 +109,12 @@ public class Ball extends GameObject {
 			 * Save shooting position to calculate direction
 			 */
 			this.shootMousePosition.set(input.getMouseX(), input.getMouseY());
+			this.lastPosition.set(this.shootMousePosition);
 			
 			/**
 			 * Calculating the direction vector to set first direction
 			 */
 			this.calculateDirectionVector();
-			
-
-			System.out.println(this.angle);
 			
 			/**
 			 * Sets rendering of balls and shooting UI to true
@@ -118,11 +123,14 @@ public class Ball extends GameObject {
 			renderBalls = true;
 		} else {
 
+			/**
+			 * Check for reflect
+			 */
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
-				this.intersects(object);
+				this.reflect(object);
 			}
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
-				this.intersects(object);
+				this.reflect(object);
 			}
 			
 			/**
@@ -136,7 +144,6 @@ public class Ball extends GameObject {
 			 */
 			renderBalls = false;
 		}
-		
 	}
 	
 	/**
@@ -164,21 +171,71 @@ public class Ball extends GameObject {
 		}
 	}
 	
-	public void intersects(GameObject object) {
+	/**
+	 * Checks if the player collides with a given game object and reflects it if it's the case
+	 * @param object
+	 */
+	public void reflect(GameObject object) {
 		
-		/**
-		 * Check if the ball touches an game object and reflects the direction vector
-		 */
+		/** Check if object collides with player */
 		if (object.intersects(this.shape)) {
 			
-			Vector2f normal = new Vector2f(this.getX(), this.getY()).negate().normalise();
+			/** Collection of lines that form the object */
+			ArrayList<Line> shapeLines = new ArrayList<Line>();
 			
-			float dotProduct = this.directionVector.dot(normal);
+			/** Making lines of the shape */
+			float[] linePoints = object.getHitbox().getPoints();
 			
-			this.directionVector.set(
-					this.directionVector.getX() - 2 * dotProduct * normal.getX(),
-					this.directionVector.getY() - 2 * dotProduct * normal.getY()
-			);
+			for (int i = 0; i < linePoints.length; i += 2) {
+				if (i + 3 > linePoints.length) {
+					shapeLines.add(new Line(linePoints[i], linePoints[i + 1], linePoints[0], linePoints[1]));
+				} else {
+					shapeLines.add(new Line(linePoints[i], linePoints[i + 1], linePoints[i + 2], linePoints[ i + 3]));
+				}
+			}
+			
+			/** Check colliding with line */
+			for (int i = 0; i < shapeLines.size(); i++) {
+				
+				/** Gets line from ArrayList */
+				Line collidingLine = shapeLines.get(i);
+				
+				/** Checks if player collides with line */
+				if (this.hitbox.intersects(collidingLine)) {
+					
+					/** Vector k1 for calculating reflection */
+					Vector2f k1 = new Vector2f(collidingLine.getDX(), collidingLine.getDY());
+					
+					/** Vector k1 normal */
+					Vector2f normalk1 = k1.getNormal().getPerpendicular();
+					
+					/** scalar product */
+					float scalar = this.directionVector.dot(normalk1);
+					
+					/**
+					 * Check if scalar is negative or positive, if its positive negate normal k1
+					 */
+					if (scalar > 0) {
+						normalk1 = normalk1.negate();
+					}
+					
+					/** Negate direction vector */
+					this.directionVector = this.directionVector.negate();
+					
+					/** Project direction vector onto normalk1 */
+					Vector2f p1 = new Vector2f();
+					this.directionVector.projectOntoUnit(normalk1, p1);
+					
+					/** Calculate vector from v1 to p1 */
+					Vector2f vToP = p1.sub(this.directionVector);
+					
+					/** Calculate r1 reflected v1 */
+					this.directionVector = this.directionVector.add(vToP.scale(2));
+					
+					/** Save last Position */
+					this.lastPosition.set(this.position);
+				}
+			}
 		}
 	}
 	
@@ -190,7 +247,7 @@ public class Ball extends GameObject {
 		/**
 		 * Calculate shooting angle in degrees (360°)
 		 */
-		float angle = (float) Math.toDegrees(
+		this.angle = (float) Math.toDegrees(
 				Math.atan2(
 						shootMousePosition.getY() - position.getY(), 
 						shootMousePosition.getX() - position.getX()
@@ -198,16 +255,11 @@ public class Ball extends GameObject {
 		);
 		
 		/**
-		 * Sets angle
-		 */
-		this.angle = angle;
-		
-		/**
 		 * Sets the direction vector as a unit vector
 		 */
 		this.directionVector.set(
-				(float) Math.cos(Math.toRadians(angle)), 
-				(float) Math.sin(Math.toRadians(angle))
+				(float) Math.cos(Math.toRadians(this.angle)), 
+				(float) Math.sin(Math.toRadians(this.angle))
 		);
 	}
 	
