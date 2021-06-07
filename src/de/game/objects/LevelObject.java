@@ -97,6 +97,7 @@ public class LevelObject extends GameObject {
 			this.rotate(this.actualRotation);
 		}
 		*/
+		
 		/** Check if object was hit by player */
 		this.checkHit(Main.PLAYER.getHitbox());
 		
@@ -131,10 +132,11 @@ public class LevelObject extends GameObject {
 	 * @param shape
 	 */
 	private boolean checkHit(Shape shape) {
-		if (this.intersects(shape)) {
+		if (this.intersects(shape) && !Main.PLAYER.isCollidesOnStart()) {
 			this.hit = true;
 			return true;
 		}
+		this.hit = false;
 		return false;
 	}
 	

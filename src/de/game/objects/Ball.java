@@ -26,6 +26,8 @@ public class Ball extends GameObject {
 	private static boolean RENDER = false;
 	private static boolean RENDERBALLS = false;
 	
+	private boolean collidesOnStart = false;
+	
 	/** Input */
 	private final Input input;
 	
@@ -105,36 +107,61 @@ public class Ball extends GameObject {
 		if (input.isMouseButtonDown(0)) {
 			
 			/**
-			 * Drawing shooting UI
+			 * Check for not placing ball in an object
 			 */
-			this.calculateShootingUI();
+			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
+				if (!object.getShape().contains(this.getShape()) && !object.getShape().intersects(this.getShape())) {
+					this.collidesOnStart = false;
+				} else {
+					this.collidesOnStart = true;
+				}
+			}
+			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
+				if (!object.getShape().contains(this.getShape()) && !object.getShape().intersects(this.getShape())) {
+					this.collidesOnStart = false;
+				} else {
+					this.collidesOnStart = true;
+				}
+			}
 			
-			/**
-			 * Save shooting position to calculate direction
-			 */
-			this.shootMousePosition.set(input.getMouseX(), input.getMouseY());
-			this.lastPosition.set(this.shootMousePosition);
-			
-			/**
-			 * Calculating the direction vector to set first direction
-			 */
-			this.calculateDirectionVector();
-			
-			/**
-			 * Sets rendering of balls and shooting UI to true
-			 */
-			RENDER = true;
-			RENDERBALLS = true;
+			if (!this.collidesOnStart) {
+				
+				/**
+				 * Drawing shooting UI
+				 */
+				this.calculateShootingUI();
+				
+				/**
+				 * Save shooting position to calculate direction
+				 */
+				this.shootMousePosition.set(input.getMouseX(), input.getMouseY());
+				this.lastPosition.set(this.shootMousePosition);
+				
+				/**
+				 * Calculating the direction vector to set first direction
+				 */
+				this.calculateDirectionVector();
+				
+				/**
+				 * Sets rendering of balls and shooting UI to true
+				 */
+				RENDER = true;
+				RENDERBALLS = true;
+			} else {
+				
+				RENDER = false;
+				RENDERBALLS = false;
+			}
 		} else {
-
+				
 			/**
 			 * Check for reflect
 			 */
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
-				if (!object.isHit()) this.reflect(object);
+				if (!object.isHit() && !this.collidesOnStart) this.reflect(object);
 			}
 			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
-				this.reflect(object);
+				if (!this.collidesOnStart) this.reflect(object);
 			}
 			
 			/**
@@ -149,7 +176,7 @@ public class Ball extends GameObject {
 			RENDERBALLS = false;
 		}
 	}
-	
+
 	/**
 	 * Render method
 	 * @param g
@@ -334,5 +361,12 @@ public class Ball extends GameObject {
 		} catch (Exception e) {
 			LevelController.LEVELINDEX = 0;
 		}
+	}
+	
+	/**
+	 * @return the collidesOnStart
+	 */
+	public boolean isCollidesOnStart() {
+		return collidesOnStart;
 	}
 }
