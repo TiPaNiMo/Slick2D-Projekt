@@ -12,7 +12,7 @@ import de.game.objects.LevelObject;
 
 public class LevelController {
 
-	public static int LEVELINDEX = 10;
+	public static int LEVELINDEX = 0;
 
 	public static ArrayList<Level> LEVELS = new ArrayList<Level>();
 
