@@ -19,7 +19,10 @@ public class Main extends BasicGame {
 	private Input input;
 	public static Ball PLAYER;
 	
+	@SuppressWarnings("unused")
 	private LevelController levelController;
+	@SuppressWarnings("unused")
+	private SoundController soundController;
 	
 	public enum State{
 		START, GAME, GAME_OVER;
@@ -44,6 +47,12 @@ public class Main extends BasicGame {
 		PLAYER = new Ball("Player", input, new Circle(0f, 0f, 10f));
 		
 		levelController = new LevelController(Main.PLAYER);
+		soundController = new SoundController();
+		
+		/**
+		 * Play background song
+		 */
+		SoundController.BACKGROUND.loop(1f, 0.25f);
 	}
 
 	@Override

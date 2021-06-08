@@ -6,6 +6,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Shape;
 
 import de.game.engine.Main;
+import de.game.engine.SoundController;
 
 public class LevelObject extends GameObject {
 
@@ -23,7 +24,7 @@ public class LevelObject extends GameObject {
 	*/
 	
 	/** sound effect if object is hit */
-	private Sound soundEffect = null;
+	private Sound soundEffect;
 	
 	
 	/**
@@ -85,6 +86,8 @@ public class LevelObject extends GameObject {
 	public void update(int delta) {
 		super.update(delta);
 		
+		if (this.soundEffect == null) this.soundEffect = SoundController.HITSOUND;
+		
 		if (firstRotate) {
 			this.rotate(this.rotation);
 			this.firstRotate = false;
@@ -103,7 +106,7 @@ public class LevelObject extends GameObject {
 		
 		try {
 			if (this.hit && this.soundEffect != null) {
-				this.soundEffect.play();
+				this.soundEffect.play(1f, 0.5f);
 			}
 		} catch(Exception e) {
 			System.out.println(e);

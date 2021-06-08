@@ -10,6 +10,7 @@ import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
+import de.game.engine.SoundController;
 import de.game.levels.LevelController;
 
 /**
@@ -174,6 +175,18 @@ public class Ball extends GameObject {
 			 * Sets rendering of shooting UI to false because its unnecessary
 			 */
 			RENDERBALLS = false;
+		}
+		
+		/**
+		 * Volume control
+		 */
+		if (this.input.isKeyPressed(Input.KEY_UP)) {
+			container.setMusicVolume(container.getMusicVolume() + 0.1f);
+			container.setSoundVolume(container.getSoundVolume() + 0.1f);
+		}
+		if (this.input.isKeyPressed(Input.KEY_DOWN)) {
+			container.setMusicVolume(container.getMusicVolume() - 0.1f);
+			container.setSoundVolume(container.getSoundVolume() - 0.1f);
 		}
 	}
 
