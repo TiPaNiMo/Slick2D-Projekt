@@ -10,7 +10,6 @@ import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
-import de.game.engine.SoundController;
 import de.game.levels.LevelController;
 
 /**
