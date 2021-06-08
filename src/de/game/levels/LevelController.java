@@ -13,7 +13,7 @@ import de.game.objects.TextObject;
 
 public class LevelController {
 
-	public static int LEVELINDEX = 8;
+	public static int LEVELINDEX = 0;
 
 	public static ArrayList<Level> LEVELS = new ArrayList<Level>();
 
@@ -79,7 +79,12 @@ public class LevelController {
 			level06.addStaticObject(new LevelObject("Rechteck", new Rectangle(0, 0, 50, 300), 300, 600, Color.black));
 			level06.addDynamicObject(new LevelObject("Dreieck", dreieck2, 500, 250));
 
+<<<<<<< Upstream, based on origin/LevelBuilding
 			Level level07 = new Level("Level 7", player, new Image("resource/textures/level/Level2Slick2D.png"));
+=======
+			//Winkel falsch
+			Level level07 = new Level("Level 7", player, new Image("src/de/game/textures/level/Level2Slick2D.png"));
+>>>>>>> ee9f31f winkel falsch
 			level07.addDynamicObject(new LevelObject("Rechteck oben links", new Rectangle(0, 0, 150, 40), 150, 300, -0.7f));
 			level07.addDynamicObject(new LevelObject("Rechteck unten links", new Rectangle(0, 0, 150, 40), 150, 600, 0.7f));
 			level07.addDynamicObject(new LevelObject("Rechteck oben rechts", new Rectangle(0, 0, 150, 40), 450, 300, 0.7f));
