@@ -5,6 +5,7 @@ import org.newdawn.slick.geom.Circle;
 
 import de.game.levels.LevelController;
 import de.game.objects.Ball;
+import de.game.ui.UI_Button_Volume;
 
 public class Main extends BasicGame {
 	
@@ -18,6 +19,8 @@ public class Main extends BasicGame {
 	private static boolean fullscreen = false;
 	private Input input;
 	public static Ball PLAYER;
+	
+	private UI_Button_Volume ui_volume;
 	
 	@SuppressWarnings("unused")
 	private LevelController levelController;
@@ -53,10 +56,16 @@ public class Main extends BasicGame {
 		 * Play background song
 		 */
 		SoundController.BACKGROUND.loop(1f, 0.25f);
+		
+		/**
+		 * Create UI
+		 */
+		ui_volume = new UI_Button_Volume(container.getWidth() - 80, 10, container.getInput());
 	}
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
+		
 		
 		switch(state) {
 		case START:
@@ -73,6 +82,9 @@ public class Main extends BasicGame {
 				e.printStackTrace();
 				state = State.START;
 			}
+			
+
+			this.ui_volume.render(container, g);
 			
 			break;
 		case GAME_OVER:
@@ -94,6 +106,16 @@ public class Main extends BasicGame {
 			
 			break;
 		case GAME:
+
+			this.ui_volume.update(container, delta);
+			
+			if(input.isMousePressed(0)) {
+				PLAYER.firstMousePress();
+				
+				if (this.ui_volume.getUi_button().contains(input.getMouseX(), input.getMouseY())) this.ui_volume.clicked = true;
+			} else {
+				this.ui_volume.clicked = false;
+			}
 			
 			try {
 				LevelController.LEVELS.get(LevelController.LEVELINDEX).update(container, delta);

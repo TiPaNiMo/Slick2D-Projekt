@@ -85,75 +85,33 @@ public class Ball extends GameObject {
 		position.set(this.x, this.y);
 		
 		/**
-		 * On first mouse press
-		 */
-		if (input.isMousePressed(0)) {
-			
-			/**
-			 * Resets level and ball
-			 */
-			this.reset();
-			
-			/**
-			 * Save mouse position on first click for placing the ball before release
-			 */
-			this.pressedMousePosition.set(input.getMouseX(), input.getMouseY());
-			this.setPosition(this.pressedMousePosition.getX(), this.pressedMousePosition.getY());
-		}
-		
-		/**
 		 * On mouse is pressed
 		 */
 		if (input.isMouseButtonDown(0)) {
+
+			/**
+			 * Drawing shooting UI
+			 */
+			this.calculateShootingUI();
 			
 			/**
-			 * Check for not placing ball in an object
+			 * Save shooting position to calculate direction
 			 */
-			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getDynamicObjects()) {
-				if (!object.getShape().contains(this.getShape()) && !object.getShape().intersects(this.getShape())) {
-					this.collidesOnStart = false;
-				} else {
-					this.collidesOnStart = true;
-				}
-			}
-			for (LevelObject object : LevelController.LEVELS.get(LevelController.LEVELINDEX).getStaticObjects()) {
-				if (!object.getShape().contains(this.getShape()) && !object.getShape().intersects(this.getShape())) {
-					this.collidesOnStart = false;
-				} else {
-					this.collidesOnStart = true;
-				}
-			}
+			this.shootMousePosition.set(input.getMouseX(), input.getMouseY());
+			this.lastPosition.set(this.shootMousePosition);
 			
-			if (!this.collidesOnStart) {
-				
-				/**
-				 * Drawing shooting UI
-				 */
-				this.calculateShootingUI();
-				
-				/**
-				 * Save shooting position to calculate direction
-				 */
-				this.shootMousePosition.set(input.getMouseX(), input.getMouseY());
-				this.lastPosition.set(this.shootMousePosition);
-				
-				/**
-				 * Calculating the direction vector to set first direction
-				 */
-				this.calculateDirectionVector();
-				
-				/**
-				 * Sets rendering of balls and shooting UI to true
-				 */
-				RENDER = true;
-				RENDERBALLS = true;
-			} else {
-				
-				RENDER = false;
-				RENDERBALLS = false;
-			}
+			/**
+			 * Calculating the direction vector to set first direction
+			 */
+			this.calculateDirectionVector();
+			
+			/**
+			 * Sets rendering of balls and shooting UI to true
+			 */
+			RENDER = true;
+			RENDERBALLS = true;
 		} else {
-				
+			
 			/**
 			 * Check for reflect
 			 */
@@ -174,18 +132,6 @@ public class Ball extends GameObject {
 			 * Sets rendering of shooting UI to false because its unnecessary
 			 */
 			RENDERBALLS = false;
-		}
-		
-		/**
-		 * Volume control
-		 */
-		if (this.input.isKeyPressed(Input.KEY_UP)) {
-			container.setMusicVolume(container.getMusicVolume() + 0.1f);
-			container.setSoundVolume(container.getSoundVolume() + 0.1f);
-		}
-		if (this.input.isKeyPressed(Input.KEY_DOWN)) {
-			container.setMusicVolume(container.getMusicVolume() - 0.1f);
-			container.setSoundVolume(container.getSoundVolume() - 0.1f);
 		}
 	}
 
@@ -380,5 +326,19 @@ public class Ball extends GameObject {
 	 */
 	public boolean isCollidesOnStart() {
 		return collidesOnStart;
+	}
+	
+	public void firstMousePress() {
+		
+		/**
+		 * Resets level and ball
+		 */
+		this.reset();
+		
+		/**
+		 * Save mouse position on first click for placing the ball before release
+		 */
+		this.pressedMousePosition.set(input.getMouseX(), input.getMouseY());
+		this.setPosition(this.pressedMousePosition.getX(), this.pressedMousePosition.getY());
 	}
 }
