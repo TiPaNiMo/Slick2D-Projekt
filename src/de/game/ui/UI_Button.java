@@ -37,10 +37,11 @@ public abstract class UI_Button extends UI_Element {
 
 	@Override
 	public void render(GameContainer container, Graphics g) throws SlickException {
-		g.setColor(this.ui_color);
-		if (ui_show) g.fill(this.ui_button);
 		
 		this.text.render(container, g);
+		
+		g.setColor(this.ui_color);
+		if (ui_show) g.fill(this.ui_button);
 	}
 
 	public Rectangle getUi_button() {

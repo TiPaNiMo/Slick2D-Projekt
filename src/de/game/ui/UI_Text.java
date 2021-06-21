@@ -90,7 +90,9 @@ public class UI_Text implements UI_Base {
 	}
 	
 	@Override
-	public void update(GameContainer container, int delta) {}
+	public void update(GameContainer container, int delta) {
+		ttf = new TrueTypeFont(this.font, true);
+	}
 
 	/**
 	 * @return the color
